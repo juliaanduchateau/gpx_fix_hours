@@ -10,8 +10,8 @@ parser.add_argument("-t", "--time", type=int, default=1, help="Time difference i
 args = parser.parse_args()
 
 try:
-    file                = args.input_file                              # Open non-optional argument as file
-    new_file_name       = args.output                                  # Set output file name
+    file                = open(args.input_file, 'r')                    # Open non-optional argument as file
+    new_file_name       = args.output                                   # Set output file name
 
     lines               = file.read().split("<trkpt")                   # Read in the text and split
 
@@ -33,3 +33,4 @@ try:
     print("Output is saved in {}".format(new_file_name))
 except:
     print("There was an error")
+
