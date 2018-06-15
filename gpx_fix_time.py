@@ -11,7 +11,7 @@ args = parser.parse_args()
 
 try:
     file                = open(args.input_file, 'r')                    # Open non-optional argument as file
-    new_file_name       = args.output                                   # Set output file name
+    new_file_name       = args.output                                   # Set output file name from optional argument
 
     lines               = file.read().split("<trkpt")                   # Read in the text and split
 
@@ -20,7 +20,9 @@ try:
     for i in range(1,len(lines)):                                       # Loop from second line to last
         string          = "<trkpt" + lines[i]                           # Prefix each line with data lost due splitting
         hour            = int(re.findall("T..:..:..", string)[0][1:3])  # Extract "Thh:mm:ss", slice it to "hh" and convert to integer
-        hour            += args.time                                    # Add time difference
+        hour            += args.time                                    # Add time difference from optional argument
+        if hour > 23:                                                   # Wrap around midnight
+            hour -= 24
         hour_string     = "T" + str(hour) + ":"                         # Prefix with "T" and suffix with ":" to replace "Thh:" below
         string          = re.sub("T..:", hour_string, string)           # Substitute old hour with new hour
         new_lines.append(string)                                        # Append the line to the list
