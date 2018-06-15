@@ -1,13 +1,17 @@
 import sys
 import re
+import argparse
 
+
+parser = argparse.ArgumentParser(description="Fix time difference in a gpx file.")
+parser.add_argument("input_file", type=str, help="The gpx file to work on")
+parser.add_argument("-o", "--output", type=str, default="output.gpx", help="Name of the output file (default: 'output.gpx')")
+parser.add_argument("-t", "--time", type=int, default=1, help="Time difference in hours to add/substract (default: 1)")
+args = parser.parse_args()
 
 try:
-    file                = open(sys.argv[1],'r')                        # Open first argument as file
-    if len(sys.argv) > 2:                                              # If second argument is passed
-        new_file_name   = sys.argv[2]                                  # Argument is name for the output file
-    else:
-        new_file_name   = "output.gpx"                                 # Else give generic name
+    file                = args.input_file                              # Open non-optional argument as file
+    new_file_name       = args.output                                  # Set output file name
 
     lines               = file.read().split("<trkpt")                   # Read in the text and split
 
@@ -16,7 +20,7 @@ try:
     for i in range(1,len(lines)):                                       # Loop from second line to last
         string          = "<trkpt" + lines[i]                           # Prefix each line with data lost due splitting
         hour            = int(re.findall("T..:..:..", string)[0][1:3])  # Extract "Thh:mm:ss", slice it to "hh" and convert to integer
-        hour            += 1                                            # increment the hour
+        hour            += args.time                                    # Add time difference
         hour_string     = "T" + str(hour) + ":"                         # Prefix with "T" and suffix with ":" to replace "Thh:" below
         string          = re.sub("T..:", hour_string, string)           # Substitute old hour with new hour
         new_lines.append(string)                                        # Append the line to the list
