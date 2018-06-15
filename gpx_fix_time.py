@@ -1,8 +1,8 @@
-import sys
 import re
 import argparse
 
 
+# Set arguments
 parser = argparse.ArgumentParser(description="Fix time difference in a gpx file.")
 parser.add_argument("input_file", type=str, help="The gpx file to work on")
 parser.add_argument("-o", "--output", type=str, default="output.gpx", help="Name of the output file (default: 'output.gpx')")
