@@ -1,4 +1,4 @@
-# Pyhton fix for gpx timestamp offset
+# Python fix for gpx timestamp offset
 ---
 This script can add/subtract an hour offset to the timestamps in a gpx file.
 
